@@ -13,3 +13,22 @@ Content-Type: application/json
 }
 
 ###
+
+
+@id=11
+GET {{WebAPI_HostAddress}}/api/user/{{id}}
+
+###
+
+@id=11
+PUT {{WebAPI_HostAddress}}/api/user/{{id}}
+Content-Type: application/json
+
+{
+  "email":"dfqwedfweq@yandex.ru",
+  "name":"fvwerfg",
+  "lastName":"gqwer",
+  "phone":null
+}
+
+###

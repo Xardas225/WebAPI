@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebAPI.Services.Interfaces;
 using WebAPI.Models.Auth;
-using System;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebAPI.Controllers;
 

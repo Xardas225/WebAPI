@@ -1,8 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebAPI.Models;
+namespace WebAPI.Models.User;
 [Table("users")] // Имя таблицы в MySQL
 public class User
 {
