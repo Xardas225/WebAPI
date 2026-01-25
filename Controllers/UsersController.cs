@@ -9,16 +9,39 @@ using WebAPI.Models.User;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController : ControllerBase
+public class UsersController : ControllerBase
 {
-    private readonly ILogger<UserController> _logger;
+    private readonly ILogger<UsersController> _logger;
     private readonly ApplicationDbContext _dbContext;
 
-    public UserController(ApplicationDbContext dbContext, ILogger<UserController> logger)
+    public UsersController(ApplicationDbContext dbContext, ILogger<UsersController> logger)
     {
         _dbContext = dbContext;
         _logger = logger;
-    } 
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllUsers()
+    {
+        try
+        {
+            var userList = await _dbContext.Users.Select(user => new UserResponse
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Name = user.Name,
+                LastName = user.LastName,
+                Phone = user.Phone
+            }).ToListAsync();
+
+
+            return Ok(userList);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUser(int id)
@@ -36,6 +59,7 @@ public class UserController : ControllerBase
 
             var response = new UserResponse
             {
+                Id = user.Id,
                 Email = user.Email,
                 Name = user.Name,
                 LastName = user.LastName,

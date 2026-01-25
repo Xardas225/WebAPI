@@ -8,5 +8,4 @@ public class UpdateUserRequest
     public string LastName { get; set; }
     public string? Phone { get; set; }
     public DateTime UpdatedAt { get; set; }
-
 }
