@@ -20,6 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Docs\architecture\decisions\" />
+    <Folder Include="Docs\development\" />
+    <Folder Include="Docs\business\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

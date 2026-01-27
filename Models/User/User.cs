@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Update.Internal;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebAPI.Models.User;
@@ -35,5 +36,14 @@ public class User
     // Токены
     public string? RefreshToken { get; set; }
     public DateTime? RefreshTokenExpiryTime { get; set; }
+
+    public void Update(string email,  string name, string lastName, string phone)
+    {
+        Email = email;
+        Name = name;
+        LastName = lastName;
+        Phone = phone;
+        UpdatedAt = DateTime.UtcNow;
+    }
 
 }

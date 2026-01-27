@@ -4,7 +4,6 @@ title Диаграмма классов - Модуль управления пользователями
 ' ================ Сущности (Entities) ================
 
 entity User <<Entity>> {
-
     +Id : int
     +Email : string
     +PasswordHash : string
@@ -15,9 +14,36 @@ entity User <<Entity>> {
     +UpdatedAt : DateTime?
     +RefreshToken : string?
     +RefreshTokenExpiryTime : DateTime?
+}
 
+' ================ Сервисы (Services) ================
+
+class UsersService <<Service>> {
+-_usersRepository: UsersRepository
+
++ GetAllUsersAsync()
 
 }
+
+' ================ Репозитории (Repositories) ================
+
+class UsersRepository <<Repository>> {
+-_dbContext: ApplicationDbContext
+
++ GetAllUsersAsync()
+
+}
+
+' ================ Интерфейсы (Interaces) ================
+
+interface IUsersRepository <<Interface>> {
++ GetAllUsersAsync()
+}
+
+interface IUsersService <<Interface>> {
++ GetAllUsersAsync()
+}
+
 
 ' ================ DTO КЛАССЫ (DTO) ================
 
@@ -44,7 +70,6 @@ class UpdateUserRequest <<Request>>
 ' ================ КОНТРОЛЛЕРЫ ================
 
 class UsersController <<Controller>> {
-    -_dbContext : ApplicationDbContext
     -_logger : ILogger<UserController>
     
     +GetUser(id) : Task<UserResponse>
@@ -64,29 +89,27 @@ class ApplicationDbContext <<Context>> {
 
 ' ================ ОТНОШЕНИЯ МЕЖДУ КЛАССАМИ ================
 
-' Наследование
 
-ApplicationDbContext --|> DbContext
-UsersController --|> ControllerBase
+UsersService ..|> IUsersService : implements
+UsersRepository ..|> IUsersRepository : implements
 
-' Композиция/Агрегация
 
-' 1. UsersController использует ApplicationDbContext
-UsersController --> ApplicationDbContext : "использует\n(-_dbContext)"
+IUsersService <-- UsersController : "использует как _usersService"
 
-' 2. UsersController принимает UpdateUserRequest
+IUsersRepository <-- UsersService : "использует как _usersRepository"
+
+UsersService ..> UserResponse: "преобразует User в UserResponse"
+
+UsersRepository --> ApplicationDbContext: "использует как _dbContext"
+
+UsersRepository --> User: "возвращает"
+
 UsersController ..> UpdateUserRequest : "принимает в методах"
 
-' 3. UsersController возвращает UserResponse
 UsersController ..> UserResponse : "возвращает"
 
-' 4. ApplicationDbContext содержит Users (DbSet<User>)
-ApplicationDbContext "1" --> "n" User : "содержит\n(+Users)"
+ApplicationDbContext --> User : "возвращает"
 
-' 5. User преобразуется в UserResponse
-User ..> UserResponse : "преобразуется в\n(mapping)"
-
-' 6. UpdateUserRequest используется для обновления User
 UpdateUserRequest ..> User : "обновляет"
 
 

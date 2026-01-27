@@ -1,23 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 namespace WebAPI.Controllers;
 
-using Microsoft.EntityFrameworkCore;
-using WebAPI.Models;
-using WebAPI.Data;
 using WebAPI.Models.User;
+using WebAPI.Services.Interfaces;
 
 [ApiController]
 [Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
     private readonly ILogger<UsersController> _logger;
-    private readonly ApplicationDbContext _dbContext;
+    private readonly IUsersService _usersService;
 
-    public UsersController(ApplicationDbContext dbContext, ILogger<UsersController> logger)
+    public UsersController( ILogger<UsersController> logger, IUsersService usersService)
     {
-        _dbContext = dbContext;
         _logger = logger;
+        _usersService = usersService;
     }
 
     [HttpGet]
@@ -25,17 +22,9 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var userList = await _dbContext.Users.Select(user => new UserResponse
-            {
-                Id = user.Id,
-                Email = user.Email,
-                Name = user.Name,
-                LastName = user.LastName,
-                Phone = user.Phone
-            }).ToListAsync();
-
-
-            return Ok(userList);
+            _logger.LogInformation("GET-запрос списка всех пользователей");
+            var users = await _usersService.GetAllUsersAsync();
+            return Ok(users);
         }
         catch (Exception ex)
         {
@@ -44,12 +33,12 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetUser(int id)
+    public async Task<IActionResult> GetUserById(int id)
     {
         try
         {
             _logger.LogInformation($"Поиск для GET-запроса пользователя с ID: {id}");
-            var user = await _dbContext.Users.FindAsync(id);
+            var user = await _usersService.GetUserById(id);
 
             if (user == null)
             {
@@ -57,16 +46,7 @@ public class UsersController : ControllerBase
                 return NotFound(new { message = "Пользователь не найден" });
             }
 
-            var response = new UserResponse
-            {
-                Id = user.Id,
-                Email = user.Email,
-                Name = user.Name,
-                LastName = user.LastName,
-                Phone = user.Phone
-            };
-
-            return Ok(response);
+            return Ok(user);
         }
         catch (Exception ex)
         {
@@ -75,26 +55,18 @@ public class UsersController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateUser(int id, UpdateUserRequest request)
+    public async Task<IActionResult> UpdateUserById(int id, UpdateUserRequest request)
     {
         try
         {
             _logger.LogInformation($"Поиск для PUT-запроса пользователя с ID: {id}");
-            var user = await _dbContext.Users.FindAsync(id);
+            var user = await _usersService.UpdateUserById(id, request);
 
             if (user == null)
             {
                 _logger.LogInformation($"Пользователь с id = {id} не найден");
                 return NotFound(new { message = "Пользователь не найден" });
             }
-
-            user.Email = request.Email;
-            user.Name = request.Name;
-            user.LastName = request.LastName;
-            user.Phone = request.Phone;
-            user.UpdatedAt = DateTime.UtcNow;
-
-            await _dbContext.SaveChangesAsync();
 
             return Ok(new { message = $"Пользователь с id = {id} успешно обновлён" });
         } catch(Exception ex)
