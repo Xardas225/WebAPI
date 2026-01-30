@@ -22,7 +22,7 @@ GET {{WebAPI_HostAddress}}/api/users/{{id}}
 
 @id=11
 PUT {{WebAPI_HostAddress}}/api/users/{{id}}
-Content-Type: application/json
+Content-Type: application/json  
 
 {
   "email":"dfqwedfweq@yandex.ru",

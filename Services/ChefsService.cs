@@ -21,9 +21,17 @@ public class ChefsService : IChefsService
     {
         var chefs = await _chefsRepository.GetAllChefsAsync();
 
-        return chefs.Select(chef => new ChefProfileResponse
+        var response = chefs.Select(chef => new ChefProfileResponse
         {
-            Id = chef.Id,
+            // UserProfile
+            UserId = chef.User.Id,
+            Email = chef.User.Email,
+            Phone = chef.User.Phone,
+            Name = chef.User.Name,
+            LastName = chef.User.LastName,
+
+            // ChefProfile
+            ChefId = chef.Id,
             KitchenName = chef.KitchenName,
             Description = chef.Description,
             IsActive = chef.IsActive,
@@ -33,6 +41,12 @@ public class ChefsService : IChefsService
             EndTime = chef.EndTime,
             ChefExperience = chef.ChefExperience
         }).ToList();
+
+
+
+
+
+        return response;
     }
 
 }

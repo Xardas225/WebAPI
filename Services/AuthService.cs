@@ -61,7 +61,7 @@ public class AuthService : IAuthService
         };
 
         if(request.Role == UserRole.Chef)
-        {
+        {   
             user.ChefProfile = new ChefProfile
             {
                 KitchenName = request.KitchenName ?? $"{request.Name}'s Kitchen",
