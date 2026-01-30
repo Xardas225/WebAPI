@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebAPI.Models.Chef;
 using WebAPI.Models.User;
+using WebAPI.Models.File;
 
 namespace WebAPI.Data
 {
@@ -14,6 +15,8 @@ namespace WebAPI.Data
         public DbSet<UserProfile> Users { get; set; }
 
         public DbSet<ChefProfile> Chefs { get; set; }
+
+        public DbSet<FileRecord> Files { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

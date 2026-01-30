@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebAPI.Services;
+using WebAPI.Models.File;
+using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Controllers;
 
@@ -7,19 +8,19 @@ namespace WebAPI.Controllers;
 [Route("api/[controller]")]
 public class UploadController : ControllerBase
 {
-    private readonly StorageService _storageService;
+    private readonly IStorageService _storageService;
 
-    public UploadController(StorageService storageService)
+    public UploadController(IStorageService storageService)
     {
         _storageService = storageService;
     }
 
     [HttpPost]
-    public async Task<IActionResult> Upload(IFormFile file)
+    public async Task<IActionResult> Upload(FileRecordRequest request)
     {
         try
-        {
-            var fileUrl = await _storageService.UploadFileAsync(file);
+        {   
+            var fileUrl = await _storageService.UploadFileAsync(request);
             return Ok(new { url = fileUrl });
         }
         catch (Exception ex)

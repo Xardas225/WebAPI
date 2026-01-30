@@ -3,41 +3,57 @@
 using Amazon.S3;
 using Amazon.S3.Transfer;
 using Microsoft.AspNetCore.Http;
+using WebAPI.Models.File;
+using WebAPI.Repositories;
+using WebAPI.Repositories.Interfaces;
+using WebAPI.Services.Interfaces;
 
-public class StorageService
+public class StorageService : IStorageService
 {
-private readonly IAmazonS3 _s3Client;
-private readonly string _bucketName;
+    private readonly IAmazonS3 _s3Client;
+    private readonly string _bucketName;
+    private readonly IStorageRepository _storageRepository;
 
-public StorageService(IConfiguration configuration)
-{
-    var config = new AmazonS3Config
+    public StorageService(IConfiguration configuration, IStorageRepository storageRepository)
     {
-        ServiceURL = configuration["SelectelS3:ServiceURL"],
-        ForcePathStyle = true
-    };
+        _storageRepository = storageRepository;
 
-    _s3Client = new AmazonS3Client(
-        configuration["SelectelS3:AccessKey"],
-        configuration["SelectelS3:SecretKey"],
-        config
-    );
+        var config = new AmazonS3Config
+        {
+            ServiceURL = configuration["SelectelS3:ServiceURL"],
+            ForcePathStyle = true
+        };
 
-    _bucketName = configuration["SelectelS3:BucketName"];
-}
+        _s3Client = new AmazonS3Client(
+            configuration["SelectelS3:AccessKey"],
+            configuration["SelectelS3:SecretKey"],
+            config
+        );
 
-public async Task<string> UploadFileAsync(IFormFile file)
-{
-    if (file == null || file.Length == 0)
-        throw new Exception("Файл пустой");
+        _bucketName = configuration["SelectelS3:BucketName"];
+    }
 
-    var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+    public async Task<string> UploadFileAsync(FileRecordRequest request)
+    {
+        if (request.File == null || request.File.Length == 0)
+            throw new Exception("Файл пустой");
 
-    var transferUtility = new TransferUtility(_s3Client);
+        var fileName = Guid.NewGuid() + Path.GetExtension(request.File.FileName);
 
-    using var stream = file.OpenReadStream();
-    await transferUtility.UploadAsync(stream, _bucketName, fileName);
+        var transferUtility = new TransferUtility(_s3Client);
 
-    return $"https://{_bucketName}.s3.storage.selcloud.ru/{fileName}";
-}
+        using var stream = request.File.OpenReadStream();
+        await transferUtility.UploadAsync(stream, _bucketName, fileName);
+
+        var fileData = (new FileRecord
+        {
+            Url = $"https://{_bucketName}.s3.storage.selcloud.ru/{fileName}",
+            UserId = request.UserId,
+            UploadedAt = DateTime.UtcNow
+        });
+
+        await _storageRepository.UploadFileAsync(fileData);
+
+        return $"https://{_bucketName}.s3.storage.selcloud.ru/{fileName}";
+    }
 }

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WebAPI.Models.User.Enums;
 using WebAPI.Models.Chef;
+using WebAPI.Models.File;
 
 namespace WebAPI.Models.User;
 [Table("users")] // Имя таблицы в MySQL
@@ -41,6 +42,8 @@ public class UserProfile
 
     // Роль пользрователя  
     public UserRole Role { get; set; }
+
+    public FileRecord? AvatarUrl { get; set; }
 
     public void Update(string email,  string name, string lastName, string phone)
     {

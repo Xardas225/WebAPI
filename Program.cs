@@ -8,15 +8,12 @@ using WebAPI.Repositories.Interfaces;
 using WebAPI.Services;
 using WebAPI.Services.Interfaces;
 using WebAPI.Models.User.Enums;
-using WebAPI.Models.Chef.Enums;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
-
-builder.Services.AddSingleton<StorageService>();
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
@@ -33,6 +30,9 @@ builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 
 builder.Services.AddScoped<IChefsService, ChefsService>();
 builder.Services.AddScoped<IChefsRepository, ChefsRepository>();
+
+builder.Services.AddScoped<IStorageService, StorageService>();
+builder.Services.AddScoped<IStorageRepository, StorageRepository>();
 
 // ========== ПОДКЛЮЧЕНИЕ К MYSQL ==========
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
