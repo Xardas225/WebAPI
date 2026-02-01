@@ -10,4 +10,5 @@ public class LoginResponse
     public string Token { get; set; }
     public UserRole Role { get; set; }
     public DateTime TokenExpiry { get; set; }
+    public string? AvatarUrl { get; set; }
 }

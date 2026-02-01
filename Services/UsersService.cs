@@ -37,7 +37,8 @@ public class UsersService : IUsersService
             Email = user.Email,
             Name = user.Name,
             LastName = user.LastName,
-            Phone = user.Phone
+            Phone = user.Phone,
+            AvatarUrl = user.AvatarUrl
         };
 
     }

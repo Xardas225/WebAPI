@@ -114,7 +114,8 @@ public class AuthService : IAuthService
             Name = user.Name,
             LastName = user.LastName,
             Token = token,
-            TokenExpiry = DateTime.UtcNow.AddHours(2)
+            TokenExpiry = DateTime.UtcNow.AddHours(2),
+            AvatarUrl = user.AvatarUrl
         };
     }
 
