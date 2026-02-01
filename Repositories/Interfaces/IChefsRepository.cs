@@ -8,4 +8,6 @@ public interface IChefsRepository
 
     Task<ChefProfile> GetChefByUserIdAsync(int id);
 
+    Task UpdateChef(ChefProfile newChefProfile);
+
 }

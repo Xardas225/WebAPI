@@ -38,4 +38,10 @@ public class ChefsRepository : IChefsRepository
     {
         return await _dbContext.Chefs.Include(c => c.User).FirstOrDefaultAsync(chef => chef.UserId == id);
     }
+
+    public async Task UpdateChef(ChefProfile chef)
+    {
+        _dbContext.Chefs.Update(chef);
+        await _dbContext.SaveChangesAsync();
+    }
 }

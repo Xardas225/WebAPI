@@ -12,6 +12,7 @@ public class StorageService : IStorageService
 {
     private readonly IAmazonS3 _s3Client;
     private readonly string _bucketName;
+    private readonly string _containerId;
     private readonly IStorageRepository _storageRepository;
 
     public StorageService(IConfiguration configuration, IStorageRepository storageRepository)
@@ -31,6 +32,7 @@ public class StorageService : IStorageService
         );
 
         _bucketName = configuration["SelectelS3:BucketName"];
+        _containerId = configuration["SelectelS3:ContainerId"];
     }
 
     // Запись файла в S3-хранилище
@@ -46,24 +48,23 @@ public class StorageService : IStorageService
         using var stream = file.OpenReadStream();
         await transferUtility.UploadAsync(stream, _bucketName, fileName);
 
-        return $"https://{_bucketName}.s3.storage.selcloud.ru/{fileName}";
+        return $"https://{_containerId}.selstorage.ru/{fileName}";
     }
 
     public async Task<string> SetUserAvatar(FileRecordRequest request)
     {
-
-        var fileName = await UploadFileAsync(request.File);
+        var fileUrl = await UploadFileAsync(request.File);
 
         var file = (new FileRecord
         {
-            Url = $"https://{_bucketName}.s3.storage.selcloud.ru/{fileName}",
+            Url = fileUrl,
             UserId = request.UserId,
             UploadedAt = DateTime.UtcNow
         });
 
         await _storageRepository.UploadFileAsync(file);
 
-        return fileName;
+        return fileUrl;
 
     }
 

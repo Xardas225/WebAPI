@@ -1,4 +1,5 @@
-﻿using WebAPI.Models.Chef;
+﻿using Microsoft.AspNetCore.Mvc;
+using WebAPI.Models.Chef;
 using WebAPI.Models.Chef.Enums;
 using WebAPI.Models.User;
 using WebAPI.Repositories;
@@ -31,6 +32,19 @@ public class ChefsService : IChefsService
         var chef = await _chefsRepository.GetChefByUserIdAsync(id);
 
         return MapChefProfileResponse(chef);
+    }
+
+    public async Task UpdateChefByUserIdAsync(ChefProfileRequest request)
+    {
+        var chef = await _chefsRepository.GetChefByUserIdAsync(request.UserId);
+
+        if(chef != null)
+        {
+            chef.Update(request.Email, request.Name, request.LastName, request.Phone, request.KitchenName, request.Description, request.StartTime, request.EndTime, request.ChefExperience);
+        }
+
+        await _chefsRepository.UpdateChef(chef);
+
     }
 
     public ChefProfileResponse MapChefProfileResponse(ChefProfile chef)

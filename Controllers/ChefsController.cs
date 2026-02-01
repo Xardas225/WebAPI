@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Services.Interfaces;
+using WebAPI.Models.Chef;
 using Microsoft.Extensions.Logging;
-using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow;
 
 namespace WebAPI.Controllers;
 
@@ -44,6 +44,21 @@ public class ChefsController : ControllerBase
             _logger.LogInformation("GET-запрос шеф-повара по Id пользователя");
             var chef = await _chefsService.GetChefByUserIdAsync(id);
             return Ok(chef);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> UpdateChefByUserId(ChefProfileRequest request)
+    {
+        try
+        {
+            _logger.LogInformation("Patch обновление шеф-повара по Id пользователя");
+            await _chefsService.UpdateChefByUserIdAsync(request);
+            return Ok(new { message = $"Пользователь с {request.UserId} успешно обновлён" });
         }
         catch (Exception ex)
         {
