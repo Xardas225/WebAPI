@@ -2,6 +2,7 @@
 using WebAPI.Models.Chef;
 using WebAPI.Models.User;
 using WebAPI.Models.File;
+using WebAPI.Models.Dish;
 
 namespace WebAPI.Data
 {
@@ -17,6 +18,8 @@ namespace WebAPI.Data
         public DbSet<ChefProfile> Chefs { get; set; }
 
         public DbSet<FileRecord> Files { get; set; }
+
+        public DbSet<DishEntity> Dishes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

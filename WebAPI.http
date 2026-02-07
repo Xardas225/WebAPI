@@ -46,3 +46,24 @@ GET {{WebAPI_HostAddress}}/api/chefs
 GET {{WebAPI_HostAddress}}/api/chefs/{{id}}
 
 ###
+
+
+
+POST {{WebAPI_HostAddress}}/api/dishes
+Content-Type: application/json
+
+{
+  "userId": 18,
+  "name": "Super Dish", 
+  "description": "Super Dish Desc",
+  "category": "Super Dish Cat",
+  "price": 1000,
+  "currency": "RUB",
+  "kitchen": "Russian"
+}
+
+###
+
+GET {{WebAPI_HostAddress}}/api/dishes
+
+###

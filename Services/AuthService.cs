@@ -10,7 +10,7 @@ using WebAPI.Models.User.Enums;
 namespace WebAPI.Services;
 
 public class AuthService : IAuthService
-{
+{   
     private readonly ApplicationDbContext _context;
     private readonly IJwtService _jwtService;
 
@@ -72,6 +72,7 @@ public class AuthService : IAuthService
         }
 
         // Сохраняем в БД
+        // Вынести в репозиторий
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
@@ -114,6 +115,7 @@ public class AuthService : IAuthService
             Name = user.Name,
             LastName = user.LastName,
             Token = token,
+            Role = user.Role,
             TokenExpiry = DateTime.UtcNow.AddHours(2),
             AvatarUrl = user.AvatarUrl
         };

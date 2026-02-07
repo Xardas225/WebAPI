@@ -34,6 +34,9 @@ builder.Services.AddScoped<IChefsRepository, ChefsRepository>();
 builder.Services.AddScoped<IStorageService, StorageService>();
 builder.Services.AddScoped<IStorageRepository, StorageRepository>();
 
+builder.Services.AddScoped<IDishesService, DishesService>();
+builder.Services.AddScoped<IDishesRepository, DishesRepository>();
+
 // ========== ПОДКЛЮЧЕНИЕ К MYSQL ==========
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 try
