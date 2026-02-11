@@ -19,10 +19,10 @@ public class DishesRepository : IDishesRepository
         _logger = logger;
     }
 
-        public async Task<List<DishEntity>> GetAllDishesAsync()
-        {
-            return await _dbContext.Dishes.Include(c => c.Author).ThenInclude(a => a.User).ToListAsync();
-        }
+    public async Task<List<DishEntity>> GetAllDishesAsync()
+    {
+        return await _dbContext.Dishes.Include(c => c.Author).ThenInclude(a => a.User).ToListAsync();
+    }
 
     public async Task CreateDishAsync(DishEntity request)
     {

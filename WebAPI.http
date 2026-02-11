@@ -66,4 +66,8 @@ Content-Type: application/json
 
 GET {{WebAPI_HostAddress}}/api/dishes
 
+### 
+
+GET {{WebAPI_HostAddress}}/api/ingredients
+
 ###

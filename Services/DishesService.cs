@@ -19,7 +19,6 @@ public class DishesService : IDishesService
         _chefsRepository = chefsRepository;
     }
 
-
     public async Task<List<DishResponse>> GetAllDishesAsync()
     {
         var dishes = await _dishesRepository.GetAllDishesAsync();
@@ -64,10 +63,13 @@ public class DishesService : IDishesService
             Author = chef,
             AuthorId = chef.Id,
             CreatedDate = createdDate,
-
+            Ingredients = new List<DishIngredientEntity> ()
         };
 
+        //if (request.Ingredients != null && request.Ingredients.Any())
+        //{
 
+        //}
 
 
         await _dishesRepository.CreateDishAsync(dish);
