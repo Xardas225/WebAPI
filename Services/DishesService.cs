@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using WebAPI.Models.Dish;
+using WebAPI.Models.Dish.Ingredient;
 using WebAPI.Repositories.Interfaces;
 using WebAPI.Services.Interfaces;
 
@@ -63,7 +64,11 @@ public class DishesService : IDishesService
             Author = chef,
             AuthorId = chef.Id,
             CreatedDate = createdDate,
+
         };
+
+
+
 
         await _dishesRepository.CreateDishAsync(dish);
     }

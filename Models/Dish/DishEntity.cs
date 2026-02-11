@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WebAPI.Models.Chef;
+using WebAPI.Models.Dish.Ingredient;
 
 namespace WebAPI.Models.Dish;
 
@@ -45,4 +46,10 @@ public class DishEntity
     public ChefProfile Author { get; set; }
 
     public int AuthorId { get; set; }
+
+    [Required]
+    public int CookTime { get; set; }
+
+    [Required]
+    public ICollection<DishIngredientEntity> Ingredients { get; set; }
 }

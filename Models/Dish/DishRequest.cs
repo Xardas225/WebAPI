@@ -1,4 +1,6 @@
-﻿namespace WebAPI.Models.Dish;
+﻿using WebAPI.Models.Dish.Ingredient;
+
+namespace WebAPI.Models.Dish;
 
 public class DishRequest
 {
@@ -15,4 +17,8 @@ public class DishRequest
     public string Currency { get; set; }
 
     public string Kitchen { get; set; }
+
+    public int CookTime { get; set; }
+
+    public List<DishIngredientDto> Ingredients { get; set; }
 }
