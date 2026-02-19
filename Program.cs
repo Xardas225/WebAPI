@@ -228,11 +228,4 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// Создаем таблицы в базе данных (если их нет)
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    dbContext.Database.EnsureCreated();
-}
-
 app.Run();

@@ -2,21 +2,21 @@
 services:
   mysql:
     image: mysql:8.0
-    container_name: smartgym-mysql
+    container_name: homechef-mysql
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: smartgymdb
-      MYSQL_USER: smartgym
-      MYSQL_PASSWORD: smartgympassword
+      MYSQL_DATABASE: homechefdb
+      MYSQL_USER: homechef
+      MYSQL_PASSWORD: homechefpassword
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./mysql/init:/docker-entrypoint-initdb.d
       - ./mysql/config:/etc/mysql/conf.d
     networks:
-      - smartgym-network
+      - homechef-network
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
@@ -38,7 +38,7 @@ volumes:
     driver: local
 
 networks:
-  smartgym-network:
+  homechef-network:
     driver: bridge
   backend:
     driver: bridge
