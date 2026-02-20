@@ -44,7 +44,7 @@ public class DishesService : IDishesService
     }
 
 
-    public async Task CreateDishAsync(DishRequest request)
+    public async Task<int> CreateDishAsync(DishRequest request)
     {
         var createdDate = DateTime.Now;
         var chef = await _chefsRepository.GetChefByUserIdAsync(request.UserId);
@@ -96,6 +96,8 @@ public class DishesService : IDishesService
         }
 
 
-        await _dishesRepository.CreateDishAsync(dish);
+        var dishId = await _dishesRepository.CreateDishAsync(dish);
+
+        return dishId;
     }
 }

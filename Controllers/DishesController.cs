@@ -39,9 +39,9 @@ public class DishesController : ControllerBase
     {
         try
         {
-            await _dishesService.CreateDishAsync(request);
+            var dishId = await _dishesService.CreateDishAsync(request);
 
-            return Ok();
+            return Ok(new { id = dishId });
         }
         catch (Exception ex)
         {

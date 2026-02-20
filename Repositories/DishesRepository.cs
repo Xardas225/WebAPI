@@ -65,13 +65,15 @@ public class DishesRepository : IDishesRepository
         return await query.ToListAsync();
     }
 
-    public async Task CreateDishAsync(DishEntity request)
+    public async Task<int> CreateDishAsync(DishEntity request)
     {
         _dbContext.Dishes.Add(request);
 
         try
         {
             await _dbContext.SaveChangesAsync();
+
+            return request.Id;
         }
         catch (DbUpdateException ex)
         {

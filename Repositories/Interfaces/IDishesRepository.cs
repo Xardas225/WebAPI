@@ -7,5 +7,5 @@ public interface IDishesRepository
 {
     public Task<List<DishEntity>> GetAllDishesAsync(DishFilters? filters, string? sort);
 
-    public Task CreateDishAsync(DishEntity request);
+    public Task<int> CreateDishAsync(DishEntity request);
 }
