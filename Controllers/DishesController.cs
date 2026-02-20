@@ -17,11 +17,11 @@ public class DishesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllDishes()
+    public async Task<IActionResult> GetAllDishes([FromQuery] DishFilters filters, [FromQuery] DishSort sort)
     {
         try
         {
-            var dishes = await _dishesService.GetAllDishesAsync();
+            var dishes = await _dishesService.GetAllDishesAsync(filters, sort);
 
             return Ok(dishes);
         }
