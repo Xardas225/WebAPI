@@ -19,11 +19,12 @@ public class DishesRepository : IDishesRepository
         _logger = logger;
     }
 
-    public async Task<List<DishEntity>> GetAllDishesAsync(DishFilters? filters = null, DishSort? sort = null)
+    public async Task<List<DishEntity>> GetAllDishesAsync(DishFilters? filters = null, string? sort = null)
     {
         var query = _dbContext.Dishes.Include(c => c.Author).ThenInclude(a => a.User).AsQueryable();
 
-        if(filters.MinPrice.HasValue)
+
+        if (filters.MinPrice.HasValue)
         {
             query = query.Where(d => d.Price >= filters.MinPrice);
         }
@@ -41,6 +42,24 @@ public class DishesRepository : IDishesRepository
         if (!string.IsNullOrEmpty(filters.Kitchen))
         {
             query = query.Where(d => d.Kitchen == filters.Kitchen);
+        }
+
+        if (!string.IsNullOrEmpty(filters.Category))
+        {
+            query = query.Where(d => d.Category == filters.Category);
+        }
+
+        if (sort != null)
+        {
+            if (sort == "asc")
+            {
+                query = query.OrderBy(d => d.Price);
+            }
+            else if (sort == "desc")
+            {
+                query = query.OrderByDescending(d => d.Price);
+            }
+
         }
 
         return await query.ToListAsync();

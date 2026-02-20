@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using WebAPI.Models.Dish;
 using WebAPI.Services.Interfaces;
 
@@ -10,14 +11,16 @@ public class DishesController : ControllerBase
 {
 
     private readonly IDishesService _dishesService;
+    private readonly ILogger<DishesController> _logger;
 
-    public DishesController(IDishesService dishesService)
+    public DishesController(IDishesService dishesService, ILogger<DishesController> logger)
     {
         _dishesService = dishesService; 
+        _logger = logger;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllDishes([FromQuery] DishFilters filters, [FromQuery] DishSort sort)
+    public async Task<IActionResult> GetAllDishes([FromQuery] DishFilters filters, [FromQuery] string? sort)
     {
         try
         {

@@ -1,11 +1,15 @@
-﻿namespace WebAPI.Models.Dish;
+﻿using Microsoft.AspNetCore.Mvc;
 
-public enum DishSort
+namespace WebAPI.Models.Dish;
+
+// TODO: разобраться почему не работает Query sort
+public class DishSort
 {
+    public string? Sort { get; set; }
+}
 
-    OnName = 0,
-    OnPriceAsc = 1,
-    OnPriceDesc = 2,
-    OnDate = 3
-
+public enum SortEnum
+{
+    asc = 0, 
+    desc = 1
 }

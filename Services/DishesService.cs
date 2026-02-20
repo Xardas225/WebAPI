@@ -21,7 +21,7 @@ public class DishesService : IDishesService
         _ingredientsRepository = ingredientsRepository;
     }
 
-    public async Task<List<DishResponse>> GetAllDishesAsync(DishFilters? filters, DishSort? sort)
+    public async Task<List<DishResponse>> GetAllDishesAsync(DishFilters? filters, string? sort)
     {
         var dishes = await _dishesRepository.GetAllDishesAsync(filters, sort);
 

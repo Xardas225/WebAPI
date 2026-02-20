@@ -5,7 +5,7 @@ namespace WebAPI.Repositories.Interfaces;
 
 public interface IDishesRepository
 {
-    public Task<List<DishEntity>> GetAllDishesAsync(DishFilters? filters, DishSort? sort);
+    public Task<List<DishEntity>> GetAllDishesAsync(DishFilters? filters, string? sort);
 
     public Task CreateDishAsync(DishEntity request);
 }
