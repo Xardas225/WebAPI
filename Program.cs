@@ -46,6 +46,9 @@ builder.Services.AddScoped<IKitchensService, KitchensService>();
 builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 
+builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<ICartService, CartService>();
+
 builder.Services.AddHttpClient<IVisionServiceClient, VisionServiceClient>(client =>
 {
     var baseUrl = builder.Configuration["VisionService:Url"] ?? "http://localhost:8000";
