@@ -24,9 +24,11 @@ public class CartRepository : ICartRepository
     }
 
 
-    public Task GetItemsFromCartAsync()
+    public async Task<List<CartEntity>> GetItemsFromCartByUserIdAsync(int userId)
     {
-        return Task.CompletedTask;
+        return await _dbContext.CartItems.Where(c => c.UserId  == userId)
+                                         .Include(c => c.Dish)
+                                         .ToListAsync();
     }
 
     public async Task<int> GetCountItemsByUserIdAsync(int userId)
@@ -35,7 +37,6 @@ public class CartRepository : ICartRepository
         var items = await _dbContext.CartItems.ToListAsync();
 
          var count = await _dbContext.CartItems.Where(c => c.UserId == userId).SumAsync(c => c.Amount);
-        _logger.LogInformation("CART ITEMS {@userId}", userId); 
 
 
         return count;

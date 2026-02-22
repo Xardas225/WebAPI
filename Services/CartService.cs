@@ -51,9 +51,25 @@ public class CartService : ICartService
         await _cartRepository.AddItemToCartAsync(cartItem);
     }
 
-    public Task GetItemsFromCartAsync()
+    public async Task<List<CartResponse>> GetItemsFromCartByUserIdAsync(int userId)
     {
-        return Task.FromResult(0); 
+        var cartItems = await _cartRepository.GetItemsFromCartByUserIdAsync(userId);
+
+        var cartItemsResponse = cartItems.Select(c => 
+        new CartResponse
+        {
+            Id = c.Id,
+            UserId= c.UserId,
+            DishId = c.DishId,
+            DishName = c.Dish.Name,
+            DishDescription = c.Dish.Description,
+            DishPrice = c.Dish.Price,
+            DishAmount = c.Amount,
+            CreatedAt = c.CreatedAt,
+            UpdatedAt = c.UpdatedAt
+        }).ToList();
+
+        return cartItemsResponse;
     }
 
     public async Task<int> GetCountItemsByUserIdAsync(int userId)

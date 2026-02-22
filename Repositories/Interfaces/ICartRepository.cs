@@ -6,7 +6,7 @@ public interface ICartRepository
 {
     public Task AddItemToCartAsync(CartEntity item);
 
-    public Task GetItemsFromCartAsync();
+    public Task<List<CartEntity>> GetItemsFromCartByUserIdAsync(int userId);
 
     public Task<int> GetCountItemsByUserIdAsync(int userId);
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WebAPI.Models.Cart;
 using WebAPI.Services.Interfaces;
 
@@ -34,11 +35,21 @@ public class CartController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetCartItemsByUserId(CartRequest request)
+    public async Task<IActionResult> GetCartItemsByUserId()
     {
         try
         {
-            return Ok();
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null)
+            {
+                return Unauthorized();
+            }
+
+            var userId = int.Parse(userIdClaim.Value);
+
+            var cartItems = await _cartService.GetItemsFromCartByUserIdAsync(userId);
+            return Ok(cartItems);
         }   
         catch (Exception ex)
         {
@@ -48,7 +59,7 @@ public class CartController : ControllerBase
 
     [HttpGet("count/{id}")]
     public async Task<IActionResult> GetCountItemsByUserId(int id)
-    {
+    {   
         try
         {
             var count = await _cartService.GetCountItemsByUserIdAsync(id);

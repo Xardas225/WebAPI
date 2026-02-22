@@ -6,7 +6,7 @@ public interface ICartService
 {
     public Task AddItemToCartAsync(CartRequest request);
 
-    public Task GetItemsFromCartAsync();
+    public Task<List<CartResponse>> GetItemsFromCartByUserIdAsync(int userId);
 
     public Task<int> GetCountItemsByUserIdAsync(int userId);
 
