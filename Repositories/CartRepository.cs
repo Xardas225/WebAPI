@@ -18,7 +18,7 @@ public class CartRepository : ICartRepository
 
     public async Task AddItemToCartAsync(CartEntity item)
     {
-        _dbContext.CartItems.AddAsync(item);
+        await _dbContext.CartItems.AddAsync(item);
 
         await _dbContext.SaveChangesAsync();
     }
@@ -42,4 +42,9 @@ public class CartRepository : ICartRepository
         return count;
     }
 
+    public async Task DeleteFromCartAsync(int itemId, int userId)
+    {
+        await _dbContext.CartItems.Where(c => c.UserId == userId && c.Id == itemId)
+                                  .ExecuteDeleteAsync();
+    }
 }

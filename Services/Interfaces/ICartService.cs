@@ -10,4 +10,6 @@ public interface ICartService
 
     public Task<int> GetCountItemsByUserIdAsync(int userId);
 
+    public Task DeleteFromCartAsync(int itemId, int userId);
+
 }

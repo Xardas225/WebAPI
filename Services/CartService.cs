@@ -57,7 +57,7 @@ public class CartService : ICartService
 
         var cartItemsResponse = cartItems.Select(c => 
         new CartResponse
-        {
+        {   
             Id = c.Id,
             UserId= c.UserId,
             DishId = c.DishId,
@@ -79,5 +79,9 @@ public class CartService : ICartService
         return count;
     }
 
+    public async Task DeleteFromCartAsync(int itemId, int userId)
+    {
+        await _cartRepository.DeleteFromCartAsync(itemId, userId);
+    }
 
 }

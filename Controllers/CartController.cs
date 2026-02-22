@@ -57,13 +57,45 @@ public class CartController : ControllerBase
         }
     }
 
-    [HttpGet("count/{id}")]
-    public async Task<IActionResult> GetCountItemsByUserId(int id)
+    [HttpGet("count")]
+    public async Task<IActionResult> GetCountItemsByUserId()
     {   
         try
         {
-            var count = await _cartService.GetCountItemsByUserIdAsync(id);
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null)
+            {
+                return Unauthorized();
+            }
+
+            var userId = int.Parse(userIdClaim.Value);
+
+            var count = await _cartService.GetCountItemsByUserIdAsync(userId);
             return Ok(count);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteFromCart(int id)
+    {
+        try
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null)
+            {
+                return Unauthorized();
+            }
+
+            var userId = int.Parse(userIdClaim.Value);
+
+            await _cartService.DeleteFromCartAsync(id, userId);
+            return NoContent();
         }
         catch (Exception ex)
         {
