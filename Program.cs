@@ -116,7 +116,7 @@ builder.Services.AddCors(options =>
         });
 });
 
-
+ 
 var redisConnection = builder.Configuration.GetConnectionString("Redis");
 if (string.IsNullOrEmpty(redisConnection))
 {

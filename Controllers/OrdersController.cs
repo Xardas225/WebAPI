@@ -4,6 +4,8 @@ using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
 public class OrdersController : ControllerBase
 {
 
@@ -15,7 +17,7 @@ public class OrdersController : ControllerBase
         _orderService = orderService; 
         _usersService = usersService;
     }
-
+            
     [HttpPost]
     public async Task<IActionResult> CreateOrder(OrderRequest request)
     {

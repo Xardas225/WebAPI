@@ -37,15 +37,16 @@ public class OrderService : IOrderService
 
         var createdDate = DateTime.UtcNow;
 
-        var phone = request.ContactPhone ?? user.Phone;
+        var phone = request.Phone;
 
         var order = new OrderEntity
-        {
+        {   
             User = user,
             UserId = userId,
             CreatedAt = createdDate,
             ContactPhone = phone,
             DeliveryAddress = request.DeliveryAddress,
+            Email = request.Email,
             Comment = request.Comment,
             Status = OrderStatus.InWork,
             PaymentStatus = PaymentStatus.Pending,

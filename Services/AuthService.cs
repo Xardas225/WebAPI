@@ -116,6 +116,7 @@ public class AuthService : IAuthService
             LastName = user.LastName,
             Token = token,
             Role = user.Role,
+            Phone = user.Phone,
             TokenExpiry = DateTime.UtcNow.AddHours(2),
             AvatarUrl = user.AvatarUrl
         };
